@@ -1,7 +1,3 @@
-"""
-Değişiklik-1
-"""
-
 from tkinter import *                           #tutorialspoint' sitesinde gui lere bakıp methodaların özellikleri öğrenilebilir
 from tkcalendar import DateEntry
 import ssl
@@ -75,6 +71,38 @@ metin_alani2.insert("1.0",karsilama_metni2,"style")
 
 from tkinter import messagebox
 
+
+def hatirlatma_mail_gonder():
+    son_mesaj = ""
+    son_mesaj += "E-posta İle Gönderildi.."
+    kullanici = "tugberk.coskun94@hotmail.com"
+    sifre = "xx4yy7f722"
+
+    tip = hatirlatma_tipi_opsiyon.get()
+    tarih = hatırlatma_tarihi_calender.get()
+    mesaj = metin_alani.get("1.0", "end")
+
+    alici = metin_alani2.get("1.0", "end")
+    baslik = "Hatırlatma Maili"
+    metin = ("{} tipindeki, {} tarihindeki mesajınız:\n{}".format(tip, tarih, mesaj))
+    msg = MIMEText(metin)
+
+    msg["Subject"] = "Hatırlatma Maili"
+    msg["From"] = kullanici
+    msg["To"] = alici
+
+    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+
+    port = 587
+    host = "smtp.office365.com"
+
+    eposta_sunucu = smtplib.SMTP(host=host, port=port)
+    eposta_sunucu.starttls(context=context)
+    eposta_sunucu.login(kullanici, sifre)
+    eposta_sunucu.send_message(msg, kullanici, alici)
+    eposta_sunucu.quit()
+    messagebox.showinfo("Başarılı işlem", son_mesaj)  # Göndere basınca info kutusu çıkartıyor, error ve warning seçenekleride var
+
 def gonder():
     son_mesaj = ""              # ilk olarak mesajı tanımladık
     try:
@@ -89,37 +117,11 @@ def gonder():
                     dosya.write("{} tipindeki, {} tarihindeki mesajınız:\n{}".format(tip,tarih,mesaj))
                     dosya.close()
 
-            elif var.get() == 2:
-                    son_mesaj += "E-posta İle Gönderildi.."
-                    kullanici = "tugberk.coskun94@hotmail.com"
-                    sifre = "xx4yy7f722"
-
-                    tip = hatirlatma_tipi_opsiyon.get()
-                    tarih = hatırlatma_tarihi_calender.get()
-                    mesaj = metin_alani.get("1.0","end")
-
-                    alici = metin_alani2.get("1.0","end")
-                    baslik = "Hatırlatma Maili"
-                    metin = ("{} tipindeki, {} tarihindeki mesajınız:\n{}".format(tip,tarih,mesaj))
-                    msg = MIMEText(metin)
-
-                    msg["Subject"] = "Hatırlatma Maili"
-                    msg["From"] = kullanici
-                    msg["To"] = alici
-
-                    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-
-                    port = 587
-                    host = "smtp.office365.com"
-
-                    eposta_sunucu = smtplib.SMTP(host=host, port=port)
-                    eposta_sunucu.starttls(context=context)
-                    eposta_sunucu.login(kullanici, sifre)
-                    eposta_sunucu.send_message(msg, kullanici, alici)
-                    eposta_sunucu.quit()
+            elif var.get() == 2 and var1.get() == 1:
+                hatirlatma_mail_gonder()
 
 
-            messagebox.showinfo("Başarılı işlem", son_mesaj)            # Göndere basınca info kutusu çıkartıyor, error ve warning seçenekleride var
+
         else:
             son_mesaj += "Gerekli alanların doldurulduğundan emin olun"
             messagebox.showwarning("Eksik işlem",son_mesaj)

@@ -1,3 +1,7 @@
+"""
+Değişiklik-1
+"""
+
 from tkinter import *                           #tutorialspoint' sitesinde gui lere bakıp methodaların özellikleri öğrenilebilir
 from tkcalendar import DateEntry
 import ssl

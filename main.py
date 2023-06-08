@@ -3,6 +3,7 @@ from tkcalendar import DateEntry
 import ssl
 import smtplib
 from email.mime.text import MIMEText
+from tkinter import messagebox
 import time
 
 master = Tk()
@@ -116,7 +117,7 @@ def gonder():
                 with open("Hatırlatmalar.txt","w",encoding="utf-8") as dosya:       # mesajı encode lamazsak türkçe karakterlerden dolayı hata veriyor
                     dosya.write("{} tipindeki, {} tarihindeki mesajınız:\n{}".format(tip,tarih,mesaj))
                     dosya.close()
-
+                messagebox.showinfo("Başarılı işlem",son_mesaj)
             elif var.get() == 2 and var1.get() == 1:
                 hatirlatma_mail_gonder()
 
@@ -142,8 +143,6 @@ metin_alani.insert("1.0",karsilama_metni,"style")                        #Metin 
 
 gonder_butonu = Button(frame_sag_alt, text="Gönder", command=gonder)        # genelde buton tasarlarken syntax Nereye, ne yazacak, ne yapacak şeklinde olur gonder adlı bir fonksiyon yazıcaz
 gonder_butonu.place(relx=0.42, rely=0.82, relheight=0.1,relwidth=0.15)
-
-
 
 
 master.mainloop()
